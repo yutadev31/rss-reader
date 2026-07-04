@@ -1,6 +1,95 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-ui: "Inter", system-ui;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-display: "IBM Plex Sans", sans-serif;
+
+  --color-ink-950: #18212b;
+  --color-paper-50: #f6f8fb;
+  --color-sand-100: #dfe7f0;
+  --color-sand-300: #9db1c7;
+  --color-clay-500: #2d6cdf;
+  --color-clay-600: #1f57ba;
+}
+
+:root {
+  color: var(--color-ink-950);
+  background: #f6f8fb;
+  font-family: var(--font-sans);
+}
+
+html[data-theme="dark"] {
+  background: #0f141a;
+}
+
+.app-theme {
+  --app-bg: #f6f8fb;
+  --app-sidebar: #ffffff;
+  --app-surface: #ffffff;
+  --app-surface-muted: #f6f8fb;
+  --app-border: #dfe7f0;
+  --app-border-strong: #9db1c7;
+  --app-text: #18212b;
+  --app-text-muted: rgba(24, 33, 43, 0.72);
+  --app-text-subtle: rgba(24, 33, 43, 0.5);
+  --app-accent: #2d6cdf;
+  --app-accent-hover: #1f57ba;
+  --app-accent-contrast: #ffffff;
+  --app-accent-muted-contrast: rgba(255, 255, 255, 0.72);
+  --app-danger-bg: #fff1f2;
+  --app-danger-border: #fecdd3;
+  --app-danger-text: #9f1239;
+}
+
+.app-theme[data-theme="dark"] {
+  --app-bg: #0f141a;
+  --app-sidebar: #151c24;
+  --app-surface: #151c24;
+  --app-surface-muted: #1b2430;
+  --app-border: #263241;
+  --app-border-strong: #3c4e62;
+  --app-text: #e7edf5;
+  --app-text-muted: rgba(231, 237, 245, 0.76);
+  --app-text-subtle: rgba(231, 237, 245, 0.52);
+  --app-accent: #4f8cff;
+  --app-accent-hover: #75a4ff;
+  --app-accent-contrast: #08111d;
+  --app-accent-muted-contrast: rgba(8, 17, 29, 0.68);
+  --app-danger-bg: #34131a;
+  --app-danger-border: #5a2632;
+  --app-danger-text: #ffb7c5;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: inherit;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }

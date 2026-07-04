@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { useEffect, useMemo, useState } from "react";
 
 type Feed = {
@@ -80,6 +81,7 @@ export default function App() {
   const [isRefetching, setIsRefetching] = useState(false);
   const [refetchError, setRefetchError] = useState<string | null>(null);
   const [feedError, setFeedError] = useState<string | null>(null);
+  const [openError, setOpenError] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = themeMode;
@@ -144,6 +146,21 @@ export default function App() {
       setRefetchError("Refetch failed");
     } finally {
       setIsRefetching(false);
+    }
+  }
+
+  async function handleOpenArticle(url: string | null) {
+    if (!url) {
+      setOpenError("No article URL is available for this entry.");
+      return;
+    }
+
+    setOpenError(null);
+
+    try {
+      await openUrl(url);
+    } catch {
+      setOpenError("Failed to open the article.");
     }
   }
 
@@ -286,6 +303,12 @@ export default function App() {
                   {refetchError}
                 </p>
               ) : null}
+
+              {openError ? (
+                <p className="mt-4 border border-[var(--app-danger-border)] bg-[var(--app-danger-bg)] px-4 py-3 text-[var(--app-danger-text)] text-sm">
+                  {openError}
+                </p>
+              ) : null}
             </header>
 
             <section className="flex-1">
@@ -303,6 +326,7 @@ export default function App() {
               {!isLoadingEntries && entries.length > 0 ? (
                 <div className="grid gap-5 xl:grid-cols-2">
                   {entries.map((entry, index) => {
+                    const articleUrl = entry.links[0] ?? null;
                     const thumbnail = entry.thumbnails[0];
                     const publishedLabel = formatDate(
                       entry.published ?? entry.updated,
@@ -310,12 +334,11 @@ export default function App() {
                     const summary = compactText(entry.description);
 
                     return (
-                      <a
-                        href={entry.links[0] ?? "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        type="button"
                         key={`${entry.title}-${index}`}
-                        className="group border border-[var(--app-border)] bg-[var(--app-surface)] p-4 transition-colors duration-150 hover:border-[var(--app-accent)] sm:p-5"
+                        className="group border border-[var(--app-border)] bg-[var(--app-surface)] p-4 text-left transition-colors duration-150 hover:border-[var(--app-accent)] sm:p-5"
+                        onClick={() => void handleOpenArticle(articleUrl)}
                       >
                         <div className="flex h-full flex-col gap-5">
                           {thumbnail ? (
@@ -350,7 +373,7 @@ export default function App() {
                             )}
                           </div>
                         </div>
-                      </a>
+                      </button>
                     );
                   })}
                 </div>
